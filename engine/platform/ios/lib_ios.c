@@ -12,13 +12,13 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 */
-#if TARGET_OS_IPHONE
+#ifdef TARGET_OS_IPHONE
 #include <SDL.h>
 #include "common.h"
 #include "library.h"
 #include "filesystem.h"
 #include "server.h"
-#include "platform/apple/ios_lib.h"
+#include "platform/ios/lib_ios.h"
 
 static void *IOS_LoadLibraryInternal( const char *dllname )
 {
@@ -53,7 +53,7 @@ static void *IOS_LoadLibraryInternal( const char *dllname )
 	return pHandle;
 }
 extern char *g_szLibrarySuffix;
-static void *IOS_LoadLibrary( const char *dllname )
+void *IOS_LoadLibrary( const char *dllname )
 {
 
 	string name;

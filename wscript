@@ -97,14 +97,14 @@ def configure(conf):
 	conf.load('xcompile compiler_c compiler_cxx gitversion clang_compilation_database')
 
 	# modify options dictionary early
-	if conf.env.DEST_OS2 == 'android':
+	if conf.env.DEST_OS2 in ['android', 'ios']:
 		conf.options.ALLOW64 = True # skip pointer length check
 		conf.options.NO_VGUI = True # skip vgui
 		conf.options.NANOGL = True
 		conf.options.GLWES  = True
 		conf.options.GL     = False
-
-	# print(conf.options.ALLOW64)
+		if conf.env.DEST_OS2 == 'ios': 
+			conf.options.SINGLE_BINARY = True
 
 	conf.env.BIT32_MANDATORY = not conf.options.ALLOW64
 	conf.env.BIT32_ALLOW64 = conf.options.ALLOW64
@@ -222,3 +222,9 @@ def build(bld):
 			continue
 
 		bld.add_subproject(i.name)
+
+from waflib import TaskGen
+@TaskGen.extension('.m')
+def m_hook(self, node):
+    """Alias .m files to be compiled the same as .c files, gcc will do the right thing."""
+    return self.create_compiled_task('c', node)

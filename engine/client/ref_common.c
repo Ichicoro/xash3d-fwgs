@@ -405,6 +405,7 @@ static qboolean R_LoadProgs( const char *name )
 	if( ref.hInstance ) R_UnloadProgs();
 
 #ifdef XASH_INTERNAL_GAMELIBS
+	FS_AllowDirectPaths( true );
 	if( !(ref.hInstance = COM_LoadLibrary( name, false, true ) ))
 	{
 		return false;
@@ -484,13 +485,22 @@ void R_Shutdown( void )
 
 void R_GetRendererName( char *dest, size_t size, const char *refdll )
 {
-	Q_snprintf( dest, size, "%sref_%s.%s",
+#ifdef XASH_INTERNAL_GAMELIBS
+    Q_snprintf( dest, size, "%sref_%s%c%s",
 #ifdef OS_LIB_PREFIX
-		OS_LIB_PREFIX,
+        OS_LIB_PREFIX,
 #else
-		"",
+        "",
 #endif
-		refdll, OS_LIB_EXT );
+#ifndef NO_LIB_EXT
+        refdll, '.', OS_LIB_EXT
+#else
+		refdll, '\0', ""
+#endif
+	);
+#else
+ 	Q_snprintf(dest, size, "ref_%s", refdll);
+#endif
 }
 
 qboolean R_Init( void )

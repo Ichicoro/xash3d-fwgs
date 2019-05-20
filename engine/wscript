@@ -78,6 +78,9 @@ def build(bld):
 		libs += ['LOG', 'EGL', 'ANDROID']
 		source += bld.path.ant_glob(['platform/android/*.cpp', 'platform/android/*.c'])
 
+	if bld.env.DEST_OS2 == 'ios':
+		source += bld.path.ant_glob(['platform/ios/*.c', 'platform/ios/*.m'])
+
 	# add client files
 	if not bld.env.DEDICATED:
 		source += bld.path.ant_glob([
@@ -107,3 +110,4 @@ def build(bld):
 		install_path = install_path,
 		subsystem = bld.env.MSVC_SUBSYSTEM
 	)
+

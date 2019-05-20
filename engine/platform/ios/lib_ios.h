@@ -13,7 +13,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 */
 #pragma once
-#if TARGET_OS_IPHONE
+#ifdef TARGET_OS_IPHONE
 #ifndef IOS_LIB_H
 #define IOS_LIB_H
 
